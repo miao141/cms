@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dao.Crawl_webMapper" > 
+ 
+<resultMap id="tableMapToModel" type="model.Crawl_webModel" >
+<result column="id" property="id"/> 
+<result column="name" property="name"/> 
+<result column="domain" property="domain"/> 
+<result column="type" property="type"/> 
+<result column="status" property="status"/> 
+<result column="create_time" property="create_time"/> 
+<result column="source" property="source"/> 
+<result column="server" property="server"/> 
+<result column="onwer" property="onwer"/> 
+</resultMap>
+ 
+<!-- ����������ҳ --> 
+<sql id="model"> 
+  <include refid="modelCount"/>
+  ${pageUtil.orderByCondition}
+  <if test="pageUtil.paging == true" >
+ ${pageUtil.limit}
+ </if>
+ </sql>
+  
+  
+ <!-- �ܼ�¼�� --> 
+  <sql id="modelCount">
+  <where>
+  	<choose>
+  	<when test="pageUtil.like==true">
+  	 <include refid="andOtherAllLike"/>
+  	 </when>
+   <otherwise>
+  	 <include refid="andOtherAll"/>
+   </otherwise>
+   </choose>
+   ${pageUtil.andCondition}
+  </where>
+  ${pageUtil.queryCondition}
+  </sql> 
+  
+  <sql id="tbaleColumns"> 
+  <trim suffix="" suffixOverrides=","> 
+id,name,domain,type,status,create_time,source,server,onwer,  
+  </trim>
+  </sql>
+  
+  
+  <sql id="insertColumns">
+  <trim suffix="" suffixOverrides=",">
+<if test="id != null and id != '' " > 
+id, </if> 
+<if test="name != null and name != '' " > 
+name, </if> 
+<if test="domain != null and domain != '' " > 
+domain, </if> 
+<if test="type != null and type != '' " > 
+type, </if> 
+<if test="status != null and status != '' " > 
+status, </if> 
+<if test="create_time != null and create_time != '' " > 
+create_time, </if> 
+<if test="source != null and source != '' " > 
+source, </if> 
+<if test="server != null and server != '' " > 
+server, </if> 
+<if test="onwer != null and onwer != '' " > 
+onwer, </if> 
+   </trim>
+  </sql>
+  
+  
+  <sql id="insertParams">
+  <trim suffix="" suffixOverrides=",">
+<if test="id != null and id != '' " > 
+#{id}, </if> 
+<if test="name != null and name != '' " > 
+#{name}, </if> 
+<if test="domain != null and domain != '' " > 
+#{domain}, </if> 
+<if test="type != null and type != '' " > 
+#{type}, </if> 
+<if test="status != null and status != '' " > 
+#{status}, </if> 
+<if test="create_time != null and create_time != '' " > 
+#{create_time}, </if> 
+<if test="source != null and source != '' " > 
+#{source}, </if> 
+<if test="server != null and server != '' " > 
+#{server}, </if> 
+<if test="onwer != null and onwer != '' " > 
+#{onwer}, </if> 
+  </trim>
+  </sql>
+  
+  
+  <sql id="updateParams">
+  <trim suffix="" suffixOverrides=",">
+<if test="id != null and id != '' " > 
+id=#{id}, </if> 
+<if test="name != null and name != '' " > 
+name=#{name}, </if> 
+<if test="domain != null and domain != '' " > 
+domain=#{domain}, </if> 
+<if test="type != null and type != '' " > 
+type=#{type}, </if> 
+<if test="status != null and status != '' " > 
+status=#{status}, </if> 
+<if test="create_time != null and create_time != '' " > 
+create_time=#{create_time}, </if> 
+<if test="source != null and source != '' " > 
+source=#{source}, </if> 
+<if test="server != null and server != '' " > 
+server=#{server}, </if> 
+<if test="onwer != null and onwer != '' " > 
+onwer=#{onwer}, </if> 
+  </trim>
+  </sql>
+  
+  
+  <sql id="andOther">
+  <trim  suffixOverrides="," >
+ <if test="id != null " > 
+   and id =  #{id}
+ </if> 
+ <if test="name != null " > 
+   and name =  #{name}
+ </if> 
+ <if test="domain != null " > 
+   and domain =  #{domain}
+ </if> 
+ <if test="type != null " > 
+   and type =  #{type}
+ </if> 
+ <if test="status != null " > 
+   and status =  #{status}
+ </if> 
+ <if test="create_time != null " > 
+   and create_time =  #{create_time}
+ </if> 
+ <if test="source != null " > 
+   and source =  #{source}
+ </if> 
+ <if test="server != null " > 
+   and server =  #{server}
+ </if> 
+ <if test="onwer != null " > 
+   and onwer =  #{onwer}
+ </if> 
+  </trim>
+  </sql>
+  
+  
+  <sql id="andOtherAll">
+  <trim  suffixOverrides="," >
+<if test="id != null and id != '' " > 
+and id =  #{id} </if> 
+<if test="name != null and name != '' " > 
+and name =  #{name} </if> 
+<if test="domain != null and domain != '' " > 
+and domain =  #{domain} </if> 
+<if test="type != null and type != '' " > 
+and type =  #{type} </if> 
+<if test="status != null and status != '' " > 
+and status =  #{status} </if> 
+<if test="create_time != null and create_time != '' " > 
+and create_time =  #{create_time} </if> 
+<if test="source != null and source != '' " > 
+and source =  #{source} </if> 
+<if test="server != null and server != '' " > 
+and server =  #{server} </if> 
+<if test="onwer != null and onwer != '' " > 
+and onwer =  #{onwer} </if> 
+  </trim>
+  </sql>
+  
+  
+  <!-- ģ����ѯ�ж� -->
+  <sql id="andOtherAllLike">
+    <trim  suffixOverrides="," >
+	<if test="id != null and id != '' " > 
+	and id like  &apos;%${id}%&apos;  </if> 
+	<if test="name != null and name != '' " > 
+	and id like  &apos;%${name}%&apos;  </if> 
+	<if test="domain != null and domain != '' " > 
+	and id like  &apos;%${domain}%&apos;  </if> 
+	<if test="type != null and type != '' " > 
+	and id like  &apos;%${type}%&apos;  </if> 
+	<if test="status != null and status != '' " > 
+	and id like  &apos;%${status}%&apos;  </if> 
+	<if test="create_time != null and create_time != '' " > 
+	and id like  &apos;%${create_time}%&apos;  </if> 
+	<if test="source != null and source != '' " > 
+	and id like  &apos;%${source}%&apos;  </if> 
+	<if test="server != null and server != '' " > 
+	and id like  &apos;%${server}%&apos;  </if> 
+	<if test="onwer != null and onwer != '' " > 
+	and id like  &apos;%${onwer}%&apos;  </if> 
+    </trim>
+  </sql>
+  
+  <!-- where ����  -->
+  <sql id="where">
+   where 1=1
+  </sql>
+  
+ <!-- columnKey  ���� ������ ,��ͼ��ȡ�������� ��Ҫ���� -->
+  <sql id="columnKey">
+   and id=#{id}
+  </sql>
+  
+  <!-- �Զ����ѯ -->
+  <sql id="sql">
+   <if test="sql != null and sql !=''">
+  ${sql}
+  </if>
+  <if test="sql == null || sql==''"> 
+   select <include refid="tbaleColumns"/> from Crawl_web <include refid="where"/>
+  </if>
+  </sql>
+  
+  <!-- ��ѯ���� -->
+  <sql id="queryCondition">
+    <if test="queryCondition != null and queryCondition != ''">
+   	${queryCondition}
+    </if>
+  </sql>
+  
+  <!-- ���,�����¼   -->
+  <insert id="insert"  parameterType="model.Crawl_webModel" >
+    insert into Crawl_web (<include refid="insertColumns"/>) values(<include refid="insertParams"/>);
+  </insert>
+  
+  <!-- ���,SQL���   -->
+  <insert id="insertBySql" parameterType="java.lang.String">
+   <include refid="sql"/>
+  </insert>
+  <!-- ɾ��,����ɾ��   -->
+  <delete id="deleteByPrimaryKey" parameterType="model.Crawl_webModel">
+  delete from Crawl_web<include refid="where"/><include refid="columnKey"/>
+  </delete>
+  
+  <!-- ɾ��,ʵ��ɾ��   -->
+  <delete id="deleteByEntity" parameterType="model.Crawl_webModel">
+  	delete from Crawl_web<include refid="where"/><include refid="andOtherAll"/>
+  </delete>
+  
+ <!-- ɾ��,SQLɾ��   --> 
+  <delete id="deleteBySql" parameterType="java.lang.String">
+   <include refid="sql"/> 
+  </delete>
+  
+  <!-- �޸�,��������  -->
+ <update id="updateByPrimaryKey" parameterType="model.Crawl_webModel" > 
+  	update Crawl_web <set><include refid="updateParams"/></set><include refid="where"/><include refid="columnKey"/>
+  </update>
+  
+  <!-- �޸�,SQL���� -->
+  <update id="updateBySql" parameterType="java.lang.String">
+   <include refid="sql"/>
+  </update>
+  
+  <!-- ��ѯ,������ѯ   -->
+  <select id="selectByPrimaryKey"  resultMap="tableMapToModel" parameterType="java.lang.Object">
+  	select <include refid="tbaleColumns"/> from Crawl_web <include refid="where"/> <include refid="columnKey"/>
+  </select>
+  
+  <!-- ��ѯ,ʵ���ѯ   -->
+  <select id="selectByEntiry"  resultMap="tableMapToModel" parameterType="model.Crawl_webModel">
+  	select <include refid="tbaleColumns"/> from Crawl_web <include refid="where"/> <include refid="andOtherAll"/>
+  </select>
+  
+  <!-- ��ѯ,SQL -->
+  <select id="selectBySql"  resultMap="tableMapToModel" parameterType="java.lang.String">
+  <include refid="sql"/>
+  </select>
+  
+  <!-- ��ѯ ,������,��ҳ ,ģ�� -->
+  <select id="selectByModelCount" resultType="java.lang.Integer"  parameterType="model.Crawl_webModel">
+  select count(1) from Crawl_web <include refid="modelCount"/>
+  </select>
+  
+  <!-- ��ѯ,����,��ҳ,ģ��  -->
+  <select id="selectByModel" resultMap="tableMapToModel"  parameterType="model.Crawl_webModel">
+  select <include refid="tbaleColumns"/>from Crawl_web <include refid="model"/>
+  </select>
+  
+  <!-- ��ѯ,������,Map -->
+  <select id="selectByMapCount" resultType="java.lang.Integer"  parameterType="java.util.Map">
+  select count(1) from Crawl_web <include refid="where"/><include refid="andOtherAll"/>
+  	    ${queryCondition}
+  <if test="andCondition !=null and andCondition !=''">
+   and ${andCondition}
+  </if>
+  <if test="orderCondition != null and queryCondition != ''" >
+  order by ${orderCondition}
+  </if>
+  </select>
+  
+ <!-- ��ѯ,������ѯ,Map --> 
+  <select id="selectByMap" resultMap="tableMapToModel"  parameterType="java.util.Map">
+  select <include refid="tbaleColumns"/>from Crawl_web <include refid="where"/><include refid="andOtherAll"/>
+  ${queryCondition}
+  <if test="andCondition !=null and andCondition !=''">
+  and ${andCondition}
+ </if> 
+  <if test="orderCondition != null and queryCondition != ''" >
+  order by ${orderCondition}
+   </if>
+  </select>
+  
+  <!-- ��ѯ,������,Map��ҳ -->
+  <select id="selectByMapPagingCount" resultType="java.lang.Integer"  parameterType="java.util.Map">
+  select count(0) from Crawl_web <include refid="where"/><include refid="andOtherAll"/>
+  ${queryCondition}
+  <if test="andCondition !=null and andCondition !=''">
+  and ${andCondition}
+  </if>
+  ${pageUtil.queryCondition}
+  ${pageUtil.andCondition}
+  </select>
+  
+  
+  <!-- ��ѯ,������ѯ,Map��ҳ -->
+  <select id="selectByMapPaging" resultMap="tableMapToModel"  parameterType="java.util.Map">
+  select <include refid="tbaleColumns"/>from Crawl_web <include refid="where"/><include refid="andOtherAll"/>
+  ${queryCondition}
+  <if test="andCondition !=null and andCondition !=''">
+   and ${andCondition}
+  </if>
+  <if test="orderCondition != null and queryCondition != ''" >
+  order by ${orderCondition}
+   </if>
+  	${pageUtil.queryCondition}
+  	${pageUtil.andCondition}
+  	${pageUtil.orderByCondition}
+  	${pageUtil.limit}
+  </select>
+  
+  <!--��ѯ, ͼ�� -->
+  <select id="charts" parameterType="java.util.Map" resultType="java.util.Map">
+  <!-- '%Y-%m-%d %H:%i:%s' -->
+  	SELECT COUNT(*),DATE_FORMAT(createTime,'${groupTimeFormat}') as createTime  FROM Crawl_web 
+  <if test="startTimeFormat!=null and endTimeFormat!=null">
+  WHERE 
+  createTime&gt;=DATE_FORMAT(NOW(), '${startTimeFormat}') AND createTime&lt;=DATE_FORMAT(NOW(), '${endTimeFormat}')
+  </if> 
+  GROUP BY DATE_FORMAT(createTime,'${groupTimeFormat}')
+  </select>
+  
+ <!--/////////////// �����ݹ��ѯ  һ�Զ� ///////////////--> 
+  <resultMap type="model.Crawl_webModel" id="tableMapToModelChild" extends="tableMapToModel">
+    <!-- һ��һ����   ע�� ˳��       ��Ҫ��ʱ���� -->
+   <!--  
+   <association property="Crawl_webModel" column="parentId" select="getParent">
+   </association>
+   -->
+   <!-- һ�Զ����  -->
+  <collection property="listCrawl_webModel" column="id" select="getChild">
+   <!-- ��������� -->
+   </collection>
+  </resultMap>
+  <!--  
+  <select id="getParent" resultMap="tableMapToModelChild" parameterType="String">
+  SELECT * FROM Crawl_web where id=#{parentId}
+  </select>
+  -->
+  
+  
+  <select id="getChild" resultMap="tableMapToModelChild" parameterType="String">
+   SELECT * FROM Crawl_web where parentId=#{id}
+  </select>
+  
+  
+  <select id="selectByChild" resultMap="tableMapToModelChild"  parameterType="model.Crawl_webModel">
+  SELECT <include refid="tbaleColumns"/>FROM Crawl_web
+   <where>
+  <include refid="andOtherAll"/>
+  	${pageUtil.andCondition}
+    </where>
+  ${pageUtil.queryCondition}
+  ${pageUtil.orderByCondition}
+   <if test="pageUtil.paging == true" >
+  ${pageUtil.limit}
+   </if>
+  </select>
+  
+  
+  
+  
+  </mapper>   

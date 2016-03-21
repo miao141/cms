@@ -1,0 +1,7 @@
+1、找到  src/ dataSourceConfig.properties  修改里面的连接数据库用户名密码
+2、导入 back.sql 文件到数据库
+
+本地访问地址为  http://localhost:8080/项目名称/admin/index.html
+
+
+

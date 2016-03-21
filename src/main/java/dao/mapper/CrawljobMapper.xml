@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dao.CrawljobMapper" > 
+<!-- Result Map 数据库映射到实体类  --> 
+<resultMap id="tableMapToModel" type="model.CrawljobModel" >
+<result column="id" property="id"/> 
+<result column="job_type" property="job_type"/> 
+<result column="job_name" property="job_name"/> 
+<result column="rule_key" property="rule_key"/> 
+<result column="target_domain" property="target_domain"/> 
+<result column="protocol" property="protocol"/> 
+<result column="start_url" property="start_url"/> 
+<result column="data_type" property="data_type"/> 
+<result column="job_tag" property="job_tag"/> 
+<result column="client_id" property="client_id"/> 
+<result column="load_class" property="load_class"/> 
+<result column="status" property="status"/> 
+<result column="create_time" property="create_time"/> 
+</resultMap>
+ 
+<!-- 所有条件分页 --> 
+<sql id="model"> 
+  <include refid="modelCount"/>
+  ${pageUtil.orderByCondition}
+  <if test="pageUtil.paging == true" >
+ ${pageUtil.limit}
+ </if>
+ </sql>
+  
+  
+ <!-- 总记录数 --> 
+  <sql id="modelCount">
+  <where>
+  	<choose>
+  	<when test="pageUtil.like==true">
+  	 <include refid="andOtherAllLike"/>
+  	 </when>
+   <otherwise>
+  	 <include refid="andOtherAll"/>
+   </otherwise>
+   </choose>
+   ${pageUtil.andCondition}
+  </where>
+  ${pageUtil.queryCondition}
+  </sql> 
+  
+  <sql id="tbaleColumns"> 
+  <trim suffix="" suffixOverrides=","> 
+id,job_type,job_name,rule_key,target_domain,protocol,start_url,data_type,job_tag,client_id,load_class,status,DATE_FORMAT(create_time ,'%Y-%m-%d %H:%i:%S') as create_time,  
+  </trim>
+  </sql>
+  
+  
+  <sql id="insertColumns">
+  <trim suffix="" suffixOverrides=",">
+<if test="id != null and id != '' " > 
+id, </if> 
+<if test="job_type != null and job_type != '' " > 
+job_type, </if> 
+<if test="job_name != null and job_name != '' " > 
+job_name, </if> 
+<if test="rule_key != null and rule_key != '' " > 
+rule_key, </if> 
+<if test="target_domain != null and target_domain != '' " > 
+target_domain, </if> 
+<if test="protocol != null and protocol != '' " > 
+protocol, </if> 
+<if test="start_url != null and start_url != '' " > 
+start_url, </if> 
+<if test="data_type != null and data_type != '' " > 
+data_type, </if> 
+<if test="job_tag != null and job_tag != '' " > 
+job_tag, </if> 
+<if test="client_id != null and client_id != '' " > 
+client_id, </if> 
+<if test="load_class != null and load_class != '' " > 
+load_class, </if> 
+<if test="status != null and status != '' " > 
+status, </if> 
+<if test="create_time != null and create_time != '' " > 
+create_time, </if> 
+   </trim>
+  </sql>
+  
+  
+  <sql id="insertParams">
+  <trim suffix="" suffixOverrides=",">
+<if test="id != null and id != '' " > 
+#{id}, </if> 
+<if test="job_type != null and job_type != '' " > 
+#{job_type}, </if> 
+<if test="job_name != null and job_name != '' " > 
+#{job_name}, </if> 
+<if test="rule_key != null and rule_key != '' " > 
+#{rule_key}, </if> 
+<if test="target_domain != null and target_domain != '' " > 
+#{target_domain}, </if> 
+<if test="protocol != null and protocol != '' " > 
+#{protocol}, </if> 
+<if test="start_url != null and start_url != '' " > 
+#{start_url}, </if> 
+<if test="data_type != null and data_type != '' " > 
+#{data_type}, </if> 
+<if test="job_tag != null and job_tag != '' " > 
+#{job_tag}, </if> 
+<if test="client_id != null and client_id != '' " > 
+#{client_id}, </if> 
+<if test="load_class != null and load_class != '' " > 
+#{load_class}, </if> 
+<if test="status != null and status != '' " > 
+#{status}, </if> 
+<if test="create_time != null and create_time != '' " > 
+#{create_time}, </if> 
+  </trim>
+  </sql>
+  
+  
+  <sql id="updateParams">
+  <trim suffix="" suffixOverrides=",">
+<if test="id != null and id != '' " > 
+id=#{id}, </if> 
+<if test="job_type != null and job_type != '' " > 
+job_type=#{job_type}, </if> 
+<if test="job_name != null and job_name != '' " > 
+job_name=#{job_name}, </if> 
+<if test="rule_key != null and rule_key != '' " > 
+rule_key=#{rule_key}, </if> 
+<if test="target_domain != null and target_domain != '' " > 
+target_domain=#{target_domain}, </if> 
+<if test="protocol != null and protocol != '' " > 
+protocol=#{protocol}, </if> 
+<if test="start_url != null and start_url != '' " > 
+start_url=#{start_url}, </if> 
+<if test="data_type != null and data_type != '' " > 
+data_type=#{data_type}, </if> 
+<if test="job_tag != null and job_tag != '' " > 
+job_tag=#{job_tag}, </if> 
+<if test="client_id != null and client_id != '' " > 
+client_id=#{client_id}, </if> 
+<if test="load_class != null and load_class != '' " > 
+load_class=#{load_class}, </if> 
+<if test="status != null and status != '' " > 
+status=#{status}, </if> 
+<if test="create_time != null and create_time != '' " > 
+create_time=#{create_time}, </if> 
+  </trim>
+  </sql>
+  
+  
+  <sql id="andOther">
+  <trim  suffixOverrides="," >
+ <if test="id != null " > 
+   and id =  #{id}
+ </if> 
+ <if test="job_type != null " > 
+   and job_type =  #{job_type}
+ </if> 
+ <if test="job_name != null " > 
+   and job_name =  #{job_name}
+ </if> 
+ <if test="rule_key != null " > 
+   and rule_key =  #{rule_key}
+ </if> 
+ <if test="target_domain != null " > 
+   and target_domain =  #{target_domain}
+ </if> 
+ <if test="protocol != null " > 
+   and protocol =  #{protocol}
+ </if> 
+ <if test="start_url != null " > 
+   and start_url =  #{start_url}
+ </if> 
+ <if test="data_type != null " > 
+   and data_type =  #{data_type}
+ </if> 
+ <if test="job_tag != null " > 
+   and job_tag =  #{job_tag}
+ </if> 
+ <if test="client_id != null " > 
+   and client_id =  #{client_id}
+ </if> 
+ <if test="load_class != null " > 
+   and load_class =  #{load_class}
+ </if> 
+ <if test="status != null " > 
+   and status =  #{status}
+ </if> 
+  <if test="create_time != null " > 
+   and create_time =  #{create_time}
+ </if> 
+  </trim>
+  </sql>
+  
+  
+  <sql id="andOtherAll">
+  <trim  suffixOverrides="," >
+<if test="id != null and id != '' " > 
+and id =  #{id} </if> 
+<if test="job_type != null and job_type != '' " > 
+and job_type =  #{job_type} </if> 
+<if test="job_name != null and job_name != '' " > 
+and job_name =  #{job_name} </if> 
+<if test="rule_key != null and rule_key != '' " > 
+and rule_key =  #{rule_key} </if> 
+<if test="target_domain != null and target_domain != '' " > 
+and target_domain =  #{target_domain} </if> 
+<if test="protocol != null and protocol != '' " > 
+and protocol =  #{protocol} </if> 
+<if test="start_url != null and start_url != '' " > 
+and start_url =  #{start_url} </if> 
+<if test="data_type != null and data_type != '' " > 
+and data_type =  #{data_type} </if> 
+<if test="job_tag != null and job_tag != '' " > 
+and job_tag =  #{job_tag} </if> 
+<if test="client_id != null and client_id != '' " > 
+and client_id =  #{client_id} </if> 
+<if test="load_class != null and load_class != '' " > 
+and load_class =  #{load_class} </if> 
+<if test="status != null and status != '' " > 
+and status =  #{status} </if> 
+<if test="create_time != null and create_time != '' " > 
+and create_time =  #{create_time} </if> 
+  </trim>
+  </sql>
+  
+  
+  <!-- 模糊查询判断 -->
+  <sql id="andOtherAllLike">
+    <trim  suffixOverrides="," >
+	<if test="id != null and id != '' " > 
+	and id like  &apos;%${id}%&apos;  </if> 
+	<if test="job_type != null and job_type != '' " > 
+	and id like  &apos;%${job_type}%&apos;  </if> 
+	<if test="job_name != null and job_name != '' " > 
+	and id like  &apos;%${job_name}%&apos;  </if> 
+	<if test="rule_key != null and rule_key != '' " > 
+	and id like  &apos;%${rule_key}%&apos;  </if> 
+	<if test="target_domain != null and target_domain != '' " > 
+	and id like  &apos;%${target_domain}%&apos;  </if> 
+	<if test="protocol != null and protocol != '' " > 
+	and id like  &apos;%${protocol}%&apos;  </if> 
+	<if test="start_url != null and start_url != '' " > 
+	and id like  &apos;%${start_url}%&apos;  </if> 
+	<if test="data_type != null and data_type != '' " > 
+	and id like  &apos;%${data_type}%&apos;  </if> 
+	<if test="job_tag != null and job_tag != '' " > 
+	and id like  &apos;%${job_tag}%&apos;  </if> 
+	<if test="client_id != null and client_id != '' " > 
+	and id like  &apos;%${client_id}%&apos;  </if> 
+	<if test="load_class != null and load_class != '' " > 
+	and id like  &apos;%${load_class}%&apos;  </if> 
+	<if test="status != null and status != '' " > 
+	and id like  &apos;%${status}%&apos;  </if> 
+	<if test="create_time != null and create_time != '' " > 
+	and id like  &apos;%${create_time}%&apos;  </if> 
+    </trim>
+  </sql>
+  
+  <!-- where 条件  -->
+  <sql id="where">
+   where 1=1
+  </sql>
+  
+ <!-- columnKey  主键 列名称 ,视图获取不到主键 需要设置 -->
+  <sql id="columnKey">
+   and id=#{id}
+  </sql>
+  
+  <!-- 自定义查询 -->
+  <sql id="sql">
+   <if test="sql != null and sql !=''">
+  ${sql}
+  </if>
+  <if test="sql == null || sql==''"> 
+   select <include refid="tbaleColumns"/> from Crawljob <include refid="where"/>
+  </if>
+  </sql>
+  
+  <!-- 查询条件 -->
+  <sql id="queryCondition">
+    <if test="queryCondition != null and queryCondition != ''">
+   	${queryCondition}
+    </if>
+  </sql>
+  
+  <!-- 添加,插入记录   -->
+  <insert id="insert"  parameterType="model.CrawljobModel" >
+    insert into Crawljob (<include refid="insertColumns"/>) values(<include refid="insertParams"/>);
+  </insert>
+  
+  <!-- 添加,SQL添加   -->
+  <insert id="insertBySql" parameterType="java.lang.String">
+   <include refid="sql"/>
+  </insert>
+  <!-- 删除,主键删除   -->
+  <delete id="deleteByPrimaryKey" parameterType="model.CrawljobModel">
+  delete from Crawljob<include refid="where"/><include refid="columnKey"/>
+  </delete>
+  
+  <!-- 删除,实体删除   -->
+  <delete id="deleteByEntity" parameterType="model.CrawljobModel">
+  	delete from Crawljob<include refid="where"/><include refid="andOtherAll"/>
+  </delete>
+  
+ <!-- 删除,SQL删除   --> 
+  <delete id="deleteBySql" parameterType="java.lang.String">
+   <include refid="sql"/> 
+  </delete>
+  
+  <!-- 修改,主键更新  -->
+ <update id="updateByPrimaryKey" parameterType="model.CrawljobModel" > 
+  	update Crawljob <set><include refid="updateParams"/></set><include refid="where"/><include refid="columnKey"/>
+  </update>
+  
+  <!-- 修改,SQL更新 -->
+  <update id="updateBySql" parameterType="java.lang.String">
+   <include refid="sql"/>
+  </update>
+  
+  <!-- 查询,主键查询   -->
+  <select id="selectByPrimaryKey"  resultMap="tableMapToModel" parameterType="java.lang.Object">
+  	select <include refid="tbaleColumns"/> from Crawljob <include refid="where"/> <include refid="columnKey"/>
+  </select>
+  
+  <!-- 查询,实体查询   -->
+  <select id="selectByEntiry"  resultMap="tableMapToModel" parameterType="model.CrawljobModel">
+  	select <include refid="tbaleColumns"/> from Crawljob <include refid="where"/> <include refid="andOtherAll"/>
+  </select>
+  
+  <!-- 查询,SQL -->
+  <select id="selectBySql"  resultMap="tableMapToModel" parameterType="java.lang.String">
+  <include refid="sql"/>
+  </select>
+  
+  <!-- 查询 ,总行数,分页 ,模型 -->
+  <select id="selectByModelCount" resultType="java.lang.Integer"  parameterType="model.CrawljobModel">
+  select count(1) from Crawljob <include refid="modelCount"/>
+  </select>
+  
+  <!-- 查询,排序,分页,模型  -->
+  <select id="selectByModel" resultMap="tableMapToModel"  parameterType="model.CrawljobModel">
+  select <include refid="tbaleColumns"/>from Crawljob <include refid="model"/>
+  </select>
+  
+  <!-- 查询,总行数,Map -->
+  <select id="selectByMapCount" resultType="java.lang.Integer"  parameterType="java.util.Map">
+  select count(1) from Crawljob <include refid="where"/><include refid="andOtherAll"/>
+  	    ${queryCondition}
+  <if test="andCondition !=null and andCondition !=''">
+   and ${andCondition}
+  </if>
+  <if test="orderCondition != null and queryCondition != ''" >
+  order by ${orderCondition}
+  </if>
+  </select>
+  
+ <!-- 查询,参数查询,Map --> 
+  <select id="selectByMap" resultMap="tableMapToModel"  parameterType="java.util.Map">
+  select <include refid="tbaleColumns"/>from Crawljob <include refid="where"/><include refid="andOtherAll"/>
+  ${queryCondition}
+  <if test="andCondition !=null and andCondition !=''">
+  and ${andCondition}
+ </if> 
+  <if test="orderCondition != null and queryCondition != ''" >
+  order by ${orderCondition}
+   </if>
+  </select>
+  
+  <!-- 查询,总行数,Map分页 -->
+  <select id="selectByMapPagingCount" resultType="java.lang.Integer"  parameterType="java.util.Map">
+  select count(0) from Crawljob <include refid="where"/><include refid="andOtherAll"/>
+  ${queryCondition}
+  <if test="andCondition !=null and andCondition !=''">
+  and ${andCondition}
+  </if>
+  ${pageUtil.queryCondition}
+  ${pageUtil.andCondition}
+  </select>
+  
+  
+  <!-- 查询,参数查询,Map分页 -->
+  <select id="selectByMapPaging" resultMap="tableMapToModel"  parameterType="java.util.Map">
+  select <include refid="tbaleColumns"/>from Crawljob <include refid="where"/><include refid="andOtherAll"/>
+  ${queryCondition}
+  <if test="andCondition !=null and andCondition !=''">
+   and ${andCondition}
+  </if>
+  <if test="orderCondition != null and queryCondition != ''" >
+  order by ${orderCondition}
+   </if>
+  	${pageUtil.queryCondition}
+  	${pageUtil.andCondition}
+  	${pageUtil.orderByCondition}
+  	${pageUtil.limit}
+  </select>
+  
+  <!--查询, 图表 -->
+  <select id="charts" parameterType="java.util.Map" resultType="java.util.Map">
+  <!-- '%Y-%m-%d %H:%i:%s' -->
+  	SELECT COUNT(*),DATE_FORMAT(createTime,'${groupTimeFormat}') as createTime  FROM Crawljob 
+  <if test="startTimeFormat!=null and endTimeFormat!=null">
+  WHERE 
+  createTime&gt;=DATE_FORMAT(NOW(), '${startTimeFormat}') AND createTime&lt;=DATE_FORMAT(NOW(), '${endTimeFormat}')
+  </if> 
+  GROUP BY DATE_FORMAT(createTime,'${groupTimeFormat}')
+  </select>
+  
+ <!--/////////////// 级联递归查询  一对多 ///////////////--> 
+  <resultMap type="model.CrawljobModel" id="tableMapToModelChild" extends="tableMapToModel">
+    <!-- 一对一关联   注意 顺序       需要用时开启 -->
+   <!--  
+   <association property="CrawljobModel" column="parentId" select="getParent">
+   </association>
+   -->
+   <!-- 一对多关联  -->
+  <collection property="listCrawljobModel" column="id" select="getChild">
+   <!-- 对象的属性 -->
+   </collection>
+  </resultMap>
+  <!--  
+  <select id="getParent" resultMap="tableMapToModelChild" parameterType="String">
+  SELECT * FROM Crawljob where id=#{parentId}
+  </select>
+  -->
+  
+  
+  <select id="getChild" resultMap="tableMapToModelChild" parameterType="String">
+   SELECT * FROM Crawljob where parentId=#{id}
+  </select>
+  
+  
+  <select id="selectByChild" resultMap="tableMapToModelChild"  parameterType="model.CrawljobModel">
+  SELECT <include refid="tbaleColumns"/>FROM Crawljob
+   <where>
+  <include refid="andOtherAll"/>
+  	${pageUtil.andCondition}
+    </where>
+  ${pageUtil.queryCondition}
+  ${pageUtil.orderByCondition}
+   <if test="pageUtil.paging == true" >
+  ${pageUtil.limit}
+   </if>
+  </select>
+  
+  
+  
+  
+  </mapper>   
